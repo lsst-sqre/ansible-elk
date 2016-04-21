@@ -1,0 +1,32 @@
+---
+
+- name: Update hostname.
+  hostname: name={{ ansible_host }}
+
+- name: Get the public-ipv4 address from the meta-data service.
+  uri:
+    url: "http://169.254.169.254/latest/meta-data/public-ipv4"
+    return_content: yes
+  register: public_ipv4
+
+- name: Update /etc/hosts.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ public_ipv4.content }} {{ ansible_host }}"
+    insertbefore: "^# "
+    line: "{{ public_ipv4.content }} {{ ansible_host }}"
+    state: present
+
+- name: Configure Kibana server.host to localhost.
+  lineinfile:
+    dest: /opt/kibana/config/kibana.yml
+    regexp: "^server.host: \"localhost\""
+    insertafter: "^# server.host:"
+    line: "server.host: \"localhost\""
+    state: present
+
+- name: Start Kibana on boot.
+  command: update-rc.d kibana defaults 96 9
+
+- name: Restart the Kibana service.
+  service: name=kibana state=restarted
