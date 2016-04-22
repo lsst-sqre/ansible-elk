@@ -57,7 +57,7 @@
 #     elasticsearch_config_node_data: yes
 #     elasticsearch_config_node_master: no
 
-- hosts: all
+- hosts: es-master es-data
   remote_user: vagrant
   become: yes
   gather_facts: yes

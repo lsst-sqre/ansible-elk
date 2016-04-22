@@ -2,3 +2,4 @@ hosts
 roles/geerlingguy.nginx
 roles/jdauphant.ssl-certs
 roles/cyverse.beats
+roles/cyverse.geoip
