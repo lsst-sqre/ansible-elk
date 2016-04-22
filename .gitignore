@@ -2,3 +2,4 @@ files/ssl
 hosts
 roles/geerlingguy.nginx
 roles/jdauphant.ssl-certs
+roles/cyverse.beats
