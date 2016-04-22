@@ -1,0 +1,13 @@
+email_domains = ["*"]
+upstreams = ["http://localhost:5601/"]
+client_id = "{{ oauth2_proxy_client_id }}"
+client_secret = "{{ oauth2_proxy_client_secret }}"
+provider = "github"
+github_org = "lsst"
+pass_access_token = false
+pass_host_header = true
+cookie_name = "_oauth2_proxy"
+cookie_secret = "{{ oauth2_proxy_cookie_secret }}"
+cookie_domain = "logging.lsst.codes"
+cookie_expire = "730h"
+cookie_secure = true
