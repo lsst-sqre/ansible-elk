@@ -1,0 +1,35 @@
+---
+
+- name: Update hostname.
+  hostname: name={{ ansible_host }}
+
+- name: Get the local-ipv4 address from the meta-data service.
+  uri:
+    url: "http://169.254.169.254/latest/meta-data/local-ipv4"
+    return_content: yes
+  register: local_ipv4
+
+- name: Update /etc/hosts.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ local_ipv4.content }} {{ ansible_host }}"
+    insertbefore: "^# "
+    line: "{{ local_ipv4.content }} {{ ansible_host }}"
+    state: present
+
+- stat: path=/etc/init.d/elasticsearch
+  register: elasticsearch_config_init_d
+
+- name: Update the ES_HEAP_SIZE to half of total ram.
+  lineinfile:
+    dest: /etc/init.d/elasticsearch
+    regexp: "^ES_HEAP_SIZE="
+    insertafter: "^#ES_HEAP_SIZE="
+    line: "ES_HEAP_SIZE={{ ansible_memtotal_mb // 2000 }}g"
+    state: present
+  when: elasticsearch_config_init_d.stat.exists == True
+
+- name: Start Elasticsearch on boot.
+  command: update-rc.d elasticsearch defaults 95 10
+
+- include: elasticsearch.yml
