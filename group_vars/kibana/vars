@@ -1,0 +1,5 @@
+ssl_certs_local_privkey_data: "{{ vault_ssl_certs_local_privkey_data }}"
+ssl_certs_local_cert_data: "{{ vault_ssl_certs_local_cert_data }}"
+oauth2_proxy_client_id: "{{ vault_oauth2_proxy_client_id }}"
+oauth2_proxy_client_secret: "{{ vault_oauth2_proxy_client_secret }}"
+oauth2_proxy_cookie_secret: "{{ vault_oauth2_proxy_cookie_secret }}"

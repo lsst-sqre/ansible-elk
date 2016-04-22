@@ -1,2 +1,0 @@
-ssl_certs_local_privkey_data: "{{ vault_ssl_certs_local_privkey_data }}"
-ssl_certs_local_cert_data: "{{ vault_ssl_certs_local_cert_data }}"
