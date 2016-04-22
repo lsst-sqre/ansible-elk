@@ -39,7 +39,7 @@
 - name: Create the service file.
   template: src=oauth2_proxy.j2 dest=/etc/init.d/oauth2_proxy mode="0755"
   
-#- name: Create the service file.
+#- name: Create the systemd service file.
 #  template: src=oauth2_proxy.service.j2 dest=/lib/systemd/system/oauth2_proxy.service
 
 - include: conf.yml
