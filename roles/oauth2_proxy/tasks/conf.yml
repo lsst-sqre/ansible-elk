@@ -1,3 +1,0 @@
-
-- name: Create the conf file.
-  template: src=oauth2_proxy.conf.j2 dest=/etc/oauth2_proxy/oauth2_proxy.conf
