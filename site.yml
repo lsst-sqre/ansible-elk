@@ -8,10 +8,10 @@
   roles:
     - role: jmatt.oauth2_proxy
       oauth2_proxy_cookie_domain: "logging.lsst.codes"
-      oauth2_proxy_email_domains: ["*"]
+      oauth2_proxy_email_domains: "['*']"
       oauth2_proxy_github_org: "lsst"
       oauth2_proxy_provider: "github"
-      oauth2_proxy_upstreams: ["http://localhost:5601/"]
+      oauth2_proxy_upstreams: "['http://localhost:5601/']"
     - role: jmatt.kibana-packages
     - role: kibana-config
     - role: jdauphant.ssl-certs
