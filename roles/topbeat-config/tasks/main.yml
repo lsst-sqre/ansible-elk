@@ -1,0 +1,12 @@
+---
+
+- name: Drop the topbeat-* index.
+  command: "curl -XDELETE 'http://{{ topbeat_config_es_hostname }}:9200/topbeat-*'"
+
+- name: Put the topbeat template.
+  command: "curl -XPUT 'http://{{ topbeat_config_es_hostname }}:9200/_template/topbeat' -d@/etc/topbeat/topbeat.template.json"
+
+- name: Execute {{ beats_package_name }} import_dashboards.sh.
+  command: "./import_dashboards.sh -url {{ topbeat_config_es_hostname }}:9200"
+    args:
+      chdir: /usr/share/{{ beats_package_name }}/kibana

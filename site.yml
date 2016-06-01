@@ -1,53 +1,7 @@
 ---
 # This playbook creates the MVP ELK system for LSST SQuaRE.
 
-- hosts: p-es-1 p-es-3
-  remote_user: vagrant
-  become: yes
-  gather_facts: yes
-  roles:
-  - role: elasticsearch-config
-    elasticsearch_config_node_data: no
-    elasticsearch_config_node_master: yes
-  - role: elasticsearch-config-public
-  - role: jdauphant.ssl-certs
-    ssl_certs_common_name: "lsst.codes"
-    ssl_certs_generate_self_signed: no
-    ssl_certs_generate_dh_param: yes
-  - role: geerlingguy.nginx
-    nginx_ppa_use: yes
-    nginx_worker_processes: "4"
-    nginx_vhosts:
-    - listen: "443 ssl http2"
-      server_name: "{{ ansible_host }}"
-      access_log: "/var/log/nginx/elasticsearch_access.log"
-      error_log: "/var/log/nginx/elasticsearch_error.log"
-      extra_parameters: |
-        ssl_certificate     /etc/ssl/lsst.codes/lsst.codes.pem;
-        ssl_certificate_key /etc/ssl/lsst.codes/lsst.codes.key;
-        ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
-        ssl_ciphers         HIGH:!aNULL:!MD5;
-        add_header Strict-Transport-Security max-age=2592000;
-        auth_basic "Elasticsearch";
-        auth_basic_user_file conf.d/passwords;
-        location / {
-          if ($request_filename ~ _shutdown) {
-            return 403;
-            break;
-          }
-          proxy_pass http://localhost:9200;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection 'upgrade';
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Scheme $scheme;
-          proxy_cache_bypass $http_upgrade;
-          proxy_connect_timeout 1;
-          proxy_send_timeout 30;
-          proxy_read_timeout 30;
-        }
-
-- hosts: p-es-k
+- hosts: es-master
   remote_user: vagrant
   become: yes
   gather_facts: yes
@@ -56,7 +10,7 @@
     elasticsearch_config_node_data: no
     elasticsearch_config_node_master: yes
 
-- hosts: p-es-2 p-es-4
+- hosts: es-data
   remote_user: vagrant
   become: yes
   gather_facts: yes
@@ -65,7 +19,7 @@
     elasticsearch_config_node_data: yes
     elasticsearch_config_node_master: no
 
-- hosts: p-es-k
+- hosts: kibana
   remote_user: vagrant
   become: yes
   gather_facts: yes
@@ -124,35 +78,78 @@
       ssl_certs_generate_self_signed: no
       ssl_certs_generate_dh_param: yes
 
-# - hosts: es-master es-data
-#   remote_user: vagrant
-#   become: yes
-#   gather_facts: yes
-#   vars:
-#     beat_name: topbeat
-#     beat_config:
-#       input:
-#         period: 10
-#         procs:
-#         - ".*"
-#         stats:
-#           cpu_per_core: false
-#           filesystem: true
-#           proc: true
-#           system: true
-#       output:
-#         elasticsearch:
-#           hosts:
-#             - "es.lsst.codes:9200" 
-#       logging:
-#         to_files: true
-#         files:
-#           path: "/var/log/topbeat"
-#           name: "topbeat.log"
-#           keepfiles: 10
-#       shipper:
-#         tags:
-#           - "panopticon"
-#   roles:
-#      - role: cyverse.beats
-    
+- hosts: git-lfs #es-master es-data lfr
+  remote_user: vagrant
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: jmatt.beats
+      beats_package_name: topbeat
+      beats_geoip: true
+      beats_config: |
+        input:
+          period: 10
+          procs:
+            - ".*"
+          stats:
+            cpu_per_core: false
+            filesystem: true
+            process: true
+            system: true
+        output:
+          elasticsearch:
+            hosts:
+              - "es-1.lsst.codes:9200"
+        logging:
+          to_files: true
+          files:
+            path: "/var/log/topbeat"
+            name: "topbeat.log"
+            keepfiles: 10
+        shipper:
+          tags:
+            - "panopticon"
+    - role: topbeat-config
+
+- hosts: lfr
+  remote_user: vagrant
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: jdauphant.ssl-certs
+      ssl_certs_common_name: "lsst.codes"
+      ssl_certs_generate_self_signed: no
+      ssl_certs_generate_dh_param: yes
+    - role: logstash-config
+
+- hosts: test # git-lfs #es-master es-data lfr
+  remote_user: vagrant
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: jmatt.beats
+      beats_package_name: topbeat
+      beats_geoip: true
+      beats_config: |
+        input:
+          period: 10
+          procs:
+            - ".*"
+          stats:
+            cpu_per_core: false
+            filesystem: true
+            process: true
+            system: true
+        output:
+          logstash:
+            hosts:
+              - "lfr.lsst.codes:5044"
+        logging:
+          to_files: true
+          files:
+            path: "/var/log/topbeat"
+            name: "topbeat.log"
+            keepfiles: 10
+        shipper:
+          tags:
+            - "panopticon"

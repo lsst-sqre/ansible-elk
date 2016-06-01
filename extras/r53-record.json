@@ -9,7 +9,7 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.122"
+            "Value": "141.142.211.49"
           }
         ]
       }
@@ -22,7 +22,7 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "172.16.1.114"
+            "Value": "141.142.211.49"
           }
         ]
       }
@@ -35,7 +35,7 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.205"
+            "Value": "141.142.208.200"
           }
         ]
       }
@@ -48,7 +48,7 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.205"
+            "Value": "141.142.208.200"
           }
         ]
       }
@@ -61,7 +61,7 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.168"
+            "Value": "141.142.211.139"
           }
         ]
       }
@@ -74,7 +74,7 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "172.16.1.125"
+            "Value": "10.0.42.55"
           }
         ]
       }
@@ -87,7 +87,7 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.169"
+            "Value": "141.142.210.168"
           }
         ]
       }
@@ -100,7 +100,7 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.137"
+            "Value": "141.142.208.187"
           }
         ]
       }
@@ -113,10 +113,25 @@
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.208.90"
+            "Value": "141.142.208.254"
           }
         ]
       }
-    }
+      },
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "es-6.lsst.codes.",
+          "Type": "A",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "141.142.211.152"
+            }
+          ]
+        }
+      }
   ]
 }
+
+

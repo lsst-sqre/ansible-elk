@@ -4,6 +4,10 @@
   set_fact:
     unicast_hosts: "{% for host in groups['es-master'] %}{{ hostvars[host]['ansible_default_ipv4']['address'] }}{% if not loop.last %}, {% endif %}{% endfor %}"
 
+- name: JVM Min and Max Memory to lock on.
+  set_fact:
+    jvm_memory: "{{ ansible_memtotal_mb // 2000 }}g"
+    
 - debug: var=unicast_hosts
 
 - name: Configure Elasticsearch discovery.
@@ -27,7 +31,7 @@
     dest: /etc/elasticsearch/elasticsearch.yml
     regexp: "^network.host.*$"
     insertafter: EOF
-    line: "network.host: [ _local_, _site_ ]"
+    line: "network.host: [ _local_, _site_, _{{ ansible_default_ipv4['interface'] }}_ ]"
     state: present
     
 - name: Configure Elasticsearch network.host.
@@ -54,5 +58,10 @@
     line: "node.data: {% if elasticsearch_config_node_data %}true{% else %}false{% endif %}"
     state: present
 
-- name: Restart Elasticsearch.
-  service: name=elasticsearch state=restarted
+- name: Configure Elasticsearch boostrap.mlockall.
+  lineinfile:
+    dest: /etc/elasticsearch/elasticsearch.yml
+    regexp: "^bootstrap.mlockall.*$"
+    insertafter: EOF
+    line: "bootstrap.mlockall: true"
+    state: present

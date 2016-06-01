@@ -1,0 +1,1 @@
+elasticsearch_config_password: "{{ vault_elasticsearch_config_password }}"

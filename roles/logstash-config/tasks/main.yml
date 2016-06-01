@@ -1,0 +1,13 @@
+---
+# Configure beats package.
+
+- name: Configure Logstash.
+  template:
+    src: "{{ item.template_name }}"
+    dest: "/etc/logstash/conf.d/{{ item.file_name }}"
+  with_items:
+    - {template_name: 010-input-beats.conf.j2,
+       file_name: 010-input-beats.conf}
+    - {template_name: 019-output-elasticsearch.conf.j2,
+       file_name: 019-output-elasticsearch.conf}
+  notify: restart logstash

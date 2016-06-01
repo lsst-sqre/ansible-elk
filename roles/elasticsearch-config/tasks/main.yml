@@ -22,13 +22,6 @@
 - stat: path=/usr/lib/systemd/system/elasticsearch.service
   register: elasticsearch_service
 
-#1. /usr/lib/systemd/system/elasticsearch.yml => LimitMEMLOCK=infinity
-#2. /etc/default/elasticsearch => MAX_LOCKED_MEMORY=unlimited
-#3. /etc/elasticsearch/elasticsearch.yml => bootstrap.mlockall: true
-#4. /etc/elasticsearch/jvm.options => -server before -Xms
-#5. /etc/elasticsearch/jvm.options => -Xms... => -Xms<ES_HEAP_SIZE>
-#6. /etc/elasticsearch/jvm.options => -Xmx... => -Xmx<ES_HEAP_SIZE>
-
 - name: Update LimitMEMLOCK in elasticsearch.service.
   lineinfile:
     dest: /usr/lib/systemd/system/elasticsearch.service
@@ -40,10 +33,10 @@
 
 - name: Update LimitMEMLOCK in elasticsearch.service.
   lineinfile:
-    dest: /usr/lib/systemd/system/elasticsearch.service
-    regexp: "^MAX_LOCK_MEMORY="
-    insertafter: "^#MAX_LOCK_MEMORY="
-    line: "MAX_LOCK_MEMORY=unlimited"
+    dest: /etc/default/elasticsearch
+    regexp: "^MAX_LOCKED_MEMORY="
+    insertafter: "^#MAX_LOCKED_MEMORY="
+    line: "MAX_LOCKED_MEMORY=unlimited"
     state: present
 
 - name: JVM Memory uses half of the machine ram in gigabytes.
@@ -74,7 +67,9 @@
     line: "-server"
     state: present
 
+- include: elasticsearch.yml
+
 - name: Start Elasticsearch on boot.
   command: update-rc.d elasticsearch defaults 95 10
-
-- include: elasticsearch.yml
+  notify:
+    - restart elasticsearch
