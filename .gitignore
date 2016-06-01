@@ -1,0 +1,9 @@
+hosts
+roles/geerlingguy.nginx
+roles/jdauphant.ssl-certs
+roles/cyverse.beats
+roles/cyverse.geoip
+roles/jmatt.elasticsearch-packages
+roles/jmatt.java-packages
+roles/jmatt.kibana-packages
+roles/jmatt.oauth2_proxy

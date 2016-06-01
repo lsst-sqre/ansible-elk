@@ -1,0 +1,4 @@
+---
+elasticsearch_config_node_data: no
+elasticsearch_config_node_master: yes
+elasticsearch_config_cluster_name: panopticon

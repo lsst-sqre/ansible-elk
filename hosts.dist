@@ -1,0 +1,14 @@
+[es-master]
+es-1.lsst.codes ansible_ssh_private_key_file=/path/to/vagrant-nebula/.vagrant/machines/es-1/openstack/vagrant-generated-12345678 ansible_user=vagrant
+es-3.lsst.codes ansible_ssh_private_key_file=/path/to/vagrant-nebula/.vagrant/machines/es-3/openstack/vagrant-generated-12345678 ansible_user=vagrant
+es-k.lsst.codes ansible_ssh_private_key_file=/path/to/vagrant-nebula/.vagrant/machines/es-k/openstack/vagrant-generated-12345678 ansible_user=vagrant
+
+[es-data]
+es-2.lsst.codes ansible_ssh_private_key_file=/path/to/vagrant-nebula/.vagrant/machines/es-2/openstack/vagrant-generated-12345678 ansible_user=vagrant
+es-4.lsst.codes ansible_ssh_private_key_file=/path/to/vagrant-nebula/.vagrant/machines/es-4/openstack/vagrant-generated-12345678 ansible_user=vagrant
+
+[lfr]
+lfr.lsst.codes ansible_ssh_private_key_file=/path/to/vagrant-nebula/.vagrant/machines/lfr/openstack/vagrant-generated-12345678 ansible_user=vagrant
+
+[kibana]
+logging.lsst.codes ansible_ssh_private_key_file=/path/to/vagrant-nebula/.vagrant/machines/es-k/openstack/vagrant-generated-12345678 ansible_user=vagrant

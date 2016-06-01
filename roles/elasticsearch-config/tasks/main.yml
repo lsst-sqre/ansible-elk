@@ -1,0 +1,75 @@
+---
+
+- apt: name=elasticsearch state=latest update_cache=yes
+
+- name: Update hostname.
+  hostname: name={{ ansible_host }}
+
+- name: Get the local-ipv4 address from the meta-data service.
+  uri:
+    url: "http://169.254.169.254/latest/meta-data/local-ipv4"
+    return_content: yes
+  register: local_ipv4
+
+- name: Update /etc/hosts.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ local_ipv4.content }} {{ ansible_host }}"
+    insertbefore: "^# "
+    line: "{{ local_ipv4.content }} {{ ansible_host }}"
+    state: present
+
+- stat: path=/usr/lib/systemd/system/elasticsearch.service
+  register: elasticsearch_service
+
+- name: Update LimitMEMLOCK in elasticsearch.service.
+  lineinfile:
+    dest: /usr/lib/systemd/system/elasticsearch.service
+    regexp: "^LimitMEMLOCK="
+    insertafter: "^#LimitMEMLOCK="
+    line: "LimitMEMLOCK=infinity"
+    state: present
+  when: elasticsearch_service.stat.exists == True
+
+- name: Update LimitMEMLOCK in elasticsearch.service.
+  lineinfile:
+    dest: /etc/default/elasticsearch
+    regexp: "^MAX_LOCKED_MEMORY="
+    insertafter: "^#MAX_LOCKED_MEMORY="
+    line: "MAX_LOCKED_MEMORY=unlimited"
+    state: present
+
+- name: JVM Memory uses half of the machine ram in gigabytes.
+  set_fact:
+    jvm_memory: "{{ ansible_memtotal_mb // 2000 }}g"
+    
+- name: Set minimum ram flag for jvm.
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options
+    regexp: "^-Xms"
+    insertbefore: "^-Xms"
+    line: "-Xms{{ jvm_memory }}"
+    state: present
+
+- name: Set maximum ram flag for jvm.
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options
+    regexp: "^-Xmx"
+    insertbefore: "^-Xmx"
+    line: "-Xmx{{ jvm_memory }}"
+    state: present
+
+- name: Add -server flag for jvm.
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options
+    regexp: "^-server"
+    insertbefore: "^-Xms"
+    line: "-server"
+    state: present
+
+- include: elasticsearch.yml
+
+- name: Start Elasticsearch on boot.
+  command: update-rc.d elasticsearch defaults 95 10
+  notify:
+    - restart elasticsearch

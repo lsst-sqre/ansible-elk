@@ -1,0 +1,9 @@
+---
+
+- file: path=/etc/nginx/conf.d state=directory mode=0755
+
+  - name: Create htpasswd for nginx proxy.
+    command: printf "elasticsearch:$(openssl passwd -crypt {{ elasticsearch_config_password }})n" > passwords
+    args:
+      chdir: /etc/nginx/conf.d
+              
