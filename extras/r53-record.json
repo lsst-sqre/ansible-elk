@@ -4,12 +4,12 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "lfr.lsst.codes.",
+        "Name": "a-lfr.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.211.49"
+            "Value": "141.142.208.187"
           }
         ]
       }
@@ -17,12 +17,12 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "collect.lsst.codes.",
+        "Name": "a-collect.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.211.49"
+            "Value": "141.142.208.187"
           }
         ]
       }
@@ -30,59 +30,7 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "es-k.lsst.codes.",
-        "Type": "A",
-        "TTL": 300,
-        "ResourceRecords": [
-          {
-            "Value": "141.142.208.200"
-          }
-        ]
-      }
-    },
-    {
-      "Action": "UPSERT",
-      "ResourceRecordSet": {
-        "Name": "logging.lsst.codes.",
-        "Type": "A",
-        "TTL": 300,
-        "ResourceRecords": [
-          {
-            "Value": "141.142.208.200"
-          }
-        ]
-      }
-    },
-    {
-      "Action": "UPSERT",
-      "ResourceRecordSet": {
-        "Name": "es-1.lsst.codes.",
-        "Type": "A",
-        "TTL": 300,
-        "ResourceRecords": [
-          {
-            "Value": "141.142.211.139"
-          }
-        ]
-      }
-    },
-    {
-      "Action": "UPSERT",
-      "ResourceRecordSet": {
-        "Name": "es.lsst.codes.",
-        "Type": "A",
-        "TTL": 300,
-        "ResourceRecords": [
-          {
-            "Value": "10.0.42.55"
-          }
-        ]
-      }
-    },
-    {
-      "Action": "UPSERT",
-      "ResourceRecordSet": {
-        "Name": "es-2.lsst.codes.",
+        "Name": "a-es-k.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
@@ -95,12 +43,64 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "es-3.lsst.codes.",
+        "Name": "a-logging.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.208.187"
+            "Value": "141.142.210.168"
+          }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "a-es-1.lsst.codes.",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "141.142.208.201"
+          }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "a-es.lsst.codes.",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "10.0.42.105"
+          }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "a-es-2.lsst.codes.",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "141.142.211.139"
+          }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "a-es-3.lsst.codes.",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "141.142.210.115"
           }
         ]
       }
@@ -108,12 +108,12 @@
           {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "es-4.lsst.codes.",
+        "Name": "a-es-4.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.208.254"
+            "Value": "141.142.209.117"
           }
         ]
       }
@@ -121,17 +121,15 @@
       {
         "Action": "UPSERT",
         "ResourceRecordSet": {
-          "Name": "es-6.lsst.codes.",
+          "Name": "a-es-6.lsst.codes.",
           "Type": "A",
           "TTL": 300,
           "ResourceRecords": [
             {
-              "Value": "141.142.211.152"
+              "Value": "141.142.208.135"
             }
           ]
         }
       }
   ]
 }
-
-
