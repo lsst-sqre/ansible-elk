@@ -4,12 +4,12 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "a-lfr.lsst.codes.",
+        "Name": "lfr.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.208.187"
+            "Value": "141.142.211.49"
           }
         ]
       }
@@ -17,12 +17,12 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "a-collect.lsst.codes.",
+        "Name": "collect.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.208.187"
+            "Value": "141.142.211.49"
           }
         ]
       }
@@ -30,12 +30,12 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "a-es-k.lsst.codes.",
+        "Name": "es-k.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.168"
+            "Value": "141.142.208.200"
           }
         ]
       }
@@ -43,12 +43,12 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "a-logging.lsst.codes.",
+        "Name": "logging.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.168"
+            "Value": "141.142.208.200"
           }
         ]
       }
@@ -56,33 +56,7 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "a-es-1.lsst.codes.",
-        "Type": "A",
-        "TTL": 300,
-        "ResourceRecords": [
-          {
-            "Value": "141.142.208.201"
-          }
-        ]
-      }
-    },
-    {
-      "Action": "UPSERT",
-      "ResourceRecordSet": {
-        "Name": "a-es.lsst.codes.",
-        "Type": "A",
-        "TTL": 300,
-        "ResourceRecords": [
-          {
-            "Value": "10.0.42.105"
-          }
-        ]
-      }
-    },
-    {
-      "Action": "UPSERT",
-      "ResourceRecordSet": {
-        "Name": "a-es-2.lsst.codes.",
+        "Name": "es-1.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
@@ -95,12 +69,38 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "a-es-3.lsst.codes.",
+        "Name": "es.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.210.115"
+            "Value": "10.0.42.55"
+          }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "es-2.lsst.codes.",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "141.142.210.168"
+          }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "es-3.lsst.codes.",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "141.142.208.187"
           }
         ]
       }
@@ -108,12 +108,12 @@
           {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "a-es-4.lsst.codes.",
+        "Name": "es-4.lsst.codes.",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "141.142.209.117"
+            "Value": "141.142.208.254"
           }
         ]
       }
@@ -121,15 +121,17 @@
       {
         "Action": "UPSERT",
         "ResourceRecordSet": {
-          "Name": "a-es-6.lsst.codes.",
+          "Name": "es-6.lsst.codes.",
           "Type": "A",
           "TTL": 300,
           "ResourceRecords": [
             {
-              "Value": "141.142.208.135"
+              "Value": "141.142.211.152"
             }
           ]
         }
       }
   ]
 }
+
+
