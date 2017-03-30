@@ -19,7 +19,7 @@
 
 - name: Configure Kibana server.host to localhost.
   lineinfile:
-    dest: /opt/kibana/config/kibana.yml
+    dest: /etc/kibana/kibana.yml
     regexp: "^server.host: \"localhost\""
     insertafter: "^# server.host:"
     line: "server.host: \"localhost\""

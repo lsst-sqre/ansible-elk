@@ -1,0 +1,9 @@
+input {
+  beats {
+    port => 5045
+    ssl => true
+    ssl_certificate =>  "/etc/logstash/tls/logstash-ncsa.crt"
+    ssl_certificate_authorities => [ "/etc/logstash/tls/ca.crt" ]
+    ssl_key => "/etc/logstash/tls/logstash-ncsa.pkcs8"
+  }
+}

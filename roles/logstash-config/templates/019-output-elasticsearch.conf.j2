@@ -1,7 +1,7 @@
-output {  
+output {
   elasticsearch {
     hosts => ["es.lsst.codes:9200", "es-3.lsst.codes:9200"]
-    sniffing => true
+    sniffing => false
     manage_template => false
     index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
     document_type => "%{[@metadata][type]}"
