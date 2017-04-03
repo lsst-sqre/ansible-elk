@@ -1,6 +1,6 @@
 ---
 
-- name: Create list of Elasticsearch master ip to use with discovery.
+- name: "Create list of Elasticsearch master ip to use with discovery."
   set_fact:
     unicast_hosts: "{% for host in groups['es-master'] %}{{ hostvars[host]['ansible_default_ipv4']['address'] }}{% if not loop.last %}, {% endif %}{% endfor %}"
 
@@ -58,10 +58,10 @@
     line: "node.data: {% if elasticsearch_config_node_data %}true{% else %}false{% endif %}"
     state: present
 
-- name: Configure Elasticsearch boostrap.mlockall.
+- name: Configure Elasticsearch boostrap.memory_lock.
   lineinfile:
     dest: /etc/elasticsearch/elasticsearch.yml
-    regexp: "^bootstrap.mlockall.*$"
+    regexp: "^bootstrap.memory_lock.*$"
     insertafter: EOF
-    line: "bootstrap.mlockall: true"
+    line: "bootstrap.memory_lock: true"
     state: present

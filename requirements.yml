@@ -1,4 +1,5 @@
-geerlingguy.nginx
-jdauphant.ssl-certs
-jmatt.kibana-packages
-jmatt.oauth2_proxy
+- src: geerlingguy.nginx
+- src: jdauphant.ssl-certs
+- src: jmatt.kibana-packages
+- src: jmatt.oauth2_proxy
+- src: jmatt.beats

@@ -1,13 +1,39 @@
 ---
-# Configure beats package.
+# Configure logstash package.
 
 - name: Configure Logstash.
   template:
     src: "{{ item.template_name }}"
     dest: "/etc/logstash/conf.d/{{ item.file_name }}"
+    
   with_items:
     - {template_name: 010-input-beats.conf.j2,
        file_name: 010-input-beats.conf}
+    - {template_name: 011-input-filebeats.conf.j2,
+       file_name: 011-input-filebeats.conf}
     - {template_name: 019-output-elasticsearch.conf.j2,
        file_name: 019-output-elasticsearch.conf}
+#    - {template_name: 030-input-conda.lsst.codes-s3.conf.j2,
+#       file_name: 030-input-conda.lsst.codes-s3.conf}
+#    - {template_name: 039-output-elasticsearch.conf.j2,
+#       file_name: 039-output-elasticsearch.conf}
   notify: restart logstash
+
+- name: Configure TLS for Logstash
+  copy:
+    content: "{{ item.content }}"
+    dest: "/etc/logstash/tls/{{ item.file_name }}"
+  with_items:
+    - {content: "{{ logstash_ncsa_crt }}",
+       file_name: "logstash-ncsa.crt"}
+    - {content: "{{ logstash_ca_crt }}",
+       file_name: "ca.crt"}
+    - {content: "{{ logstash_ncsa_pkcs8 }}",
+       file_name: "logstash-ncsa.pkcs8"}
+  notify: restart logstash
+  
+- name: Limit maxsize of all logs.
+  lineinfile:
+    dest: /etc/logrotate.conf
+    state: present
+    line: "maxsize 500M"

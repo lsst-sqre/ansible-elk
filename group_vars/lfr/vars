@@ -1,0 +1,5 @@
+logstash_aws_access_key_id: "{{ vault_logstash_aws_access_key_id }}"
+logstash_aws_secret_access_key: "{{ vault_logstash_aws_secret_access_key }}"
+logstash_ncsa_crt: "{{ vault_logstash_ncsa_crt }}"
+logstash_ca_crt: "{{ vault_logstash_ca_crt }}"
+logstash_ncsa_pkcs8: "{{ vault_logstash_ncsa_pkcs8 }}"
