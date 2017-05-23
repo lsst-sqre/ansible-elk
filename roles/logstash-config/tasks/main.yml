@@ -11,6 +11,8 @@
        file_name: 010-input-beats.conf}
     - {template_name: 011-input-filebeats.conf.j2,
        file_name: 011-input-filebeats.conf}
+    - {template_name: 017-input-rabbitmq.conf.j2,
+       file_name: 017-input-rabbitmq.conf}
     - {template_name: 019-output-elasticsearch.conf.j2,
        file_name: 019-output-elasticsearch.conf}
 #    - {template_name: 030-input-conda.lsst.codes-s3.conf.j2,
