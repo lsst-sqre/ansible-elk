@@ -1,9 +1,27 @@
 output {
-  elasticsearch {
-    hosts => ["es.lsst.codes:9200", "es-3.lsst.codes:9200"]
-    sniffing => false
-    manage_template => false
-    index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
-    document_type => "%{[@metadata][type]}"
+  if [type] == "metricsets" {
+    elasticsearch {
+      hosts => ["es.lsst.codes:9200"]
+      sniffing => false
+      manage_template => false
+      index => "metricbeat-%{+YYYY.MM.dd}"
+      document_type => "metricsets"
+    }
+  } else if [type] == "filebeat-docker-logs" {
+    elasticsearch {
+      hosts => ["es.lsst.codes:9200"]
+      sniffing => false
+      manage_template => false
+      index => "filebeat-%{+YYYY.MM.dd}"
+      document_type => "filebeat-docker-logs"
+    }
+  } else {
+    elasticsearch {
+      hosts => ["es.lsst.codes:9200"]
+      sniffing => false
+      manage_template => false
+      index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+      document_type => "%{[@metadata][type]}"
+    }
   }
 }
