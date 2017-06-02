@@ -1,0 +1,10 @@
+input {
+  rabbitmq {
+    host => "{{ logstash_rabbitmq_site_host }}"
+    queue => "{{ logstash_rabbitmq_queue }}"
+    user => "{{ logstash_rabbitmq_user }}"
+    password => "{{ logstash_rabbitmq_password }}"
+    vhost => "{{ logstash_rabbitmq_vhost }}"
+    durable => true
+  }
+}

@@ -1,14 +1,49 @@
 ---
 # Install some dev tools.
 
-- hosts: all
+# - hosts: lfr
+#   remote_user: vagrant
+#   become: yes
+#   gather_facts: yes
+#   tasks:
+#     - apt: name={{ item }} state=present
+#       with_items:
+#         - curl
+#         - tmux
+#     - pip: name=ansible state=present
+#     - shell: /usr/bin/uptime
+#       register: result
+#     - debug: var=result verbosity=2
+#     - name: Display all variables and facts known for a host.
+#       debug: var=hostvars[inventory_hostname] verbosity=3
+#   roles:
+#     - role: jmatt.editor-packages
+
+# - hosts: lfr
+#   remote_user: vagrant
+#   become: yes
+#   gather_facts: yes
+#   roles:
+#     - role: logstash-config
+
+- hosts: es-master es-data
   remote_user: vagrant
   become: yes
   gather_facts: yes
   tasks:
-    - apt: name={{ item }} state=present
-      with_items:
-        - curl
-        - tmux
-  roles:
-    - role: jmatt.editor-packages
+    - systemd:
+        name: elasticsearch.service
+        state: restarted
+
+# - hosts: lfr
+#   remote_user: vagrant
+#   become: yes
+#   gather_facts: yes
+#   tasks:
+#     - systemd:
+#         name: "{{ item }}"
+#         state: restarted
+#       with_items:
+#         - logstash.service
+#         - metricbeat.service
+#         - riemann.service
