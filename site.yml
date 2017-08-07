@@ -30,7 +30,7 @@
 #       oauth2_proxy_github_org: "lsst"
 #       oauth2_proxy_provider: "github"
 #       oauth2_proxy_upstreams: "['http://localhost:5601/']"
-# #    - role: jmatt.kibana-packages
+#     - role: jmatt.kibana-packages
 #     - role: kibana-config
 #     - role: jdauphant.ssl-certs
 #       ssl_certs_common_name: "lsst.codes"
@@ -47,9 +47,20 @@
 #         extra_parameters: |
 #           ssl_certificate     /etc/ssl/lsst.codes/lsst.codes.pem;
 #           ssl_certificate_key /etc/ssl/lsst.codes/lsst.codes.key;
-#           ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
-#           ssl_ciphers         HIGH:!aNULL:!MD5;
-#           add_header Strict-Transport-Security max-age=2592000;
+#           # from: https://mozilla.github.io/server-side-tls/ssl-config-generator/
+#           ssl_session_timeout 1d;
+#           ssl_session_cache shared:SSL:50m;
+#           ssl_session_tickets off;
+#           # modern configuration. tweak to your needs.
+#           ssl_protocols TLSv1.2;
+#           ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
+#           ssl_prefer_server_ciphers on;
+#           # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
+#           add_header Strict-Transport-Security max-age=15768000;
+#           # OCSP Stapling ---
+#           # fetch OCSP records from URL in ssl_certificate and cache them
+#           ssl_stapling on;
+#           ssl_stapling_verify on;
 #           location / {
 #             proxy_pass http://localhost:4180;
 #             proxy_set_header Upgrade $http_upgrade;
@@ -120,44 +131,96 @@
 #     - role: logstash-config
 
 
-- hosts: git-lfs  #kibana es-master es-data # lfr kibana # git-lfs #es-master es-data lfr
+# - hosts: git-lfs  #kibana es-master es-data # lfr kibana # git-lfs #es-master es-data lfr
+#   remote_user: vagrant
+#   become: yes
+#   gather_facts: yes
+#   roles:
+#     - role: jmatt.beats
+#       beats_package_name: metricbeat
+#       beats_package_version: 5.4.0
+#       beats_geoip: true
+#       beats_config: |
+#         metricbeat.modules:
+#         - module: system
+#           metricsets:
+#             - cpu
+#             - filesystem
+#             - memory
+#             - network
+#             - process
+#           enabled: true
+#           period: 60s
+#           processes: ['.*']
+#           cpu_ticks: false
+#         - module: nginx
+#           metricsets: ["stubstatus"]
+#           enabled: true
+#           period: 60s
+#           # Nginx hosts
+#           hosts: ["https://git-lfs.lsst.codes/panopticon_stub_status"]
+#         output:
+#           logstash:
+#             hosts:
+#               - "lfr.lsst.codes:5044"
+#         logging:
+#           to_files: true
+#           files:
+#             path: "/var/log/metricbeat"
+#             name: "metricbeat.log"
+#             keepfiles: 10
+#         shipper:
+#           tags:
+#             - "panopticon"
+
+- hosts: kibana
   remote_user: vagrant
   become: yes
   gather_facts: yes
   roles:
-    - role: jmatt.beats
-      beats_package_name: metricbeat
-      beats_package_version: 5.4.0
-      beats_geoip: true
-      beats_config: |
-        metricbeat.modules:
-        - module: system
-          metricsets:
-            - cpu
-            - filesystem
-            - memory
-            - network
-            - process
-          enabled: true
-          period: 60s
-          processes: ['.*']
-          cpu_ticks: false
-        - module: nginx
-          metricsets: ["stubstatus"]
-          enabled: true
-          period: 60s
-          # Nginx hosts
-          hosts: ["https://git-lfs.lsst.codes/panopticon_stub_status"]
-        output:
-          logstash:
-            hosts:
-              - "lfr.lsst.codes:5044"
-        logging:
-          to_files: true
-          files:
-            path: "/var/log/metricbeat"
-            name: "metricbeat.log"
-            keepfiles: 10
-        shipper:
-          tags:
-            - "panopticon"
+    - role: jdauphant.ssl-certs
+      ssl_certs_common_name: "lsst.codes"
+      ssl_certs_generate_self_signed: no
+      ssl_certs_generate_dh_param: yes
+    - role: geerlingguy.nginx
+      nginx_ppa_use: yes
+      nginx_worker_processes: "4"
+      nginx_vhosts:
+      - listen: "443 ssl http2"
+        server_name: "logging.lsst.codes"
+        access_log: "/var/log/nginx/kibana_access.log"
+        error_log: "/var/log/nginx/kibana_error.log"
+        extra_parameters: |
+          ssl_certificate     /etc/ssl/lsst.codes/lsst.codes.pem;
+          ssl_certificate_key /etc/ssl/lsst.codes/lsst.codes.key;
+          # from: https://mozilla.github.io/server-side-tls/ssl-config-generator/
+          ssl_session_timeout 1d;
+          ssl_session_cache shared:SSL:50m;
+          ssl_session_tickets off;
+          # modern configuration. tweak to your needs.
+          ssl_protocols TLSv1.2;
+          ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
+          ssl_prefer_server_ciphers on;
+          # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
+          add_header Strict-Transport-Security max-age=15768000;
+          # OCSP Stapling ---
+          # fetch OCSP records from URL in ssl_certificate and cache them
+          ssl_stapling on;
+          ssl_stapling_verify on;
+          location / {
+            proxy_pass http://localhost:4180;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Scheme $scheme;
+            proxy_cache_bypass $http_upgrade;
+            proxy_connect_timeout 1;
+            proxy_send_timeout 30;
+            proxy_read_timeout 30;
+           }
+      - listen: 80
+        server_name: "logging.lsst.codes"
+        extra_parameters: |
+          return 301 https://logging.lsst.codes;
+      nginx_remove_default_vhost: yes
